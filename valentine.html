@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Maaaluu 💖</title>
+<style>
+body{
+  margin:0;
+  height:100vh;
+  font-family:'Poppins',sans-serif;
+  background:linear-gradient(135deg,#ff758c,#ff7eb3);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  overflow:hidden;
+}
+.card{
+  background:white;
+  padding:35px;
+  border-radius:22px;
+  text-align:center;
+  box-shadow:0 15px 30px rgba(0,0,0,.25);
+}
+button{
+  padding:14px 30px;
+  font-size:18px;
+  border:none;
+  border-radius:12px;
+  cursor:pointer;
+  margin:10px;
+}
+#yes{background:#ff4d6d;color:white;}
+#no{background:#adb5bd;position:absolute;}
+.loading{
+  color:white;
+  font-size:28px;
+  animation:pulse 1.2s infinite;
+}
+@keyframes pulse{
+  0%{opacity:.4}50%{opacity:1}100%{opacity:.4}
+}
+.heart{
+  position:fixed;
+  font-size:20px;
+  animation:float 2s linear forwards;
+}
+@keyframes float{
+  from{transform:translateY(0);opacity:1}
+  to{transform:translateY(-120px);opacity:0}
+}
+</style>
+</head>
+
+<body>
+
+<audio autoplay loop>
+  <source src="https://cdn.pixabay.com/audio/2023/02/14/audio_87c8c7c1fa.mp3">
+</audio>
+
+<div id="content" class="loading">Loading Maaaluu’s decision… 💕</div>
+
+<script>
+setTimeout(showQuestion,2500);
+
+const messages=[
+  "Be honest please 🥺",
+  "Think carefully 😏",
+  "We’d look cute together 👀",
+  "Okay you don’t really have a choice 😌"
+];
+let msgIndex=0;
+let yesSize=1;
+
+function showQuestion(){
+  document.getElementById("content").outerHTML=`
+  <div class="card">
+    <h1 id="text">Maaaluu 💕<br>Will you be my Valentine?</h1>
+    <button id="yes">Yes 💖</button>
+    <button id="no">No 💔</button>
+  </div>`;
+  
+  const noBtn=document.getElementById("no");
+  const yesBtn=document.getElementById("yes");
+  const text=document.getElementById("text");
+
+  noBtn.addEventListener("mouseover",()=>{
+    noBtn.style.left=Math.random()*(window.innerWidth-120)+"px";
+    noBtn.style.top=Math.random()*(window.innerHeight-60)+"px";
+    text.innerText=messages[msgIndex++%messages.length];
+    yesSize+=0.15;
+    yesBtn.style.transform=`scale(${yesSize})`;
+  });
+
+  noBtn.addEventListener("click",yesAction);
+  yesBtn.addEventListener("click",yesAction);
+}
+
+function yesAction(){
+  document.body.innerHTML=`
+  <h1 style="color:white;text-align:center;">
+    YAYYY MAAALUUU 💖🎉<br><br>
+    You just made my day 😍<br><br>
+    ❤️ Forever ❤️
+  </h1>`;
+  confetti();
+}
+
+function confetti(){
+  for(let i=0;i<150;i++){
+    let d=document.createElement("div");
+    d.style.position="fixed";
+    d.style.width="8px";
+    d.style.height="8px";
+    d.style.borderRadius="50%";
+    d.style.background=["#ff4d6d","#ffd166","#06d6a0","#4d96ff"][Math.floor(Math.random()*4)];
+    d.style.left=Math.random()*window.innerWidth+"px";
+    d.style.top="-10px";
+    document.body.appendChild(d);
+    d.animate([{transform:"translateY(0)"},{transform:"translateY(100vh)"}],
+      {duration:2000+Math.random()*2000});
+    setTimeout(()=>d.remove(),4000);
+  }
+}
+
+document.addEventListener("click",(e)=>{
+  let h=document.createElement("div");
+  h.className="heart";
+  h.innerHTML="💖";
+  h.style.left=e.clientX+"px";
+  h.style.top=e.clientY+"px";
+  document.body.appendChild(h);
+  setTimeout(()=>h.remove(),2000);
+});
+</script>
+
+</body>
+</html>
